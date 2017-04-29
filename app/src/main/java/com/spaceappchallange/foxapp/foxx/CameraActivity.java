@@ -1,6 +1,7 @@
 package com.spaceappchallange.foxapp.foxx;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     Camera camera;
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
+
+    String name;
 
     PictureCallback jpegCallback;
 
@@ -45,7 +48,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
             public void onPictureTaken(byte[] data, Camera camera) {
                 FileOutputStream outStream;
                 try {
-                    outStream = new FileOutputStream(String.format("/sdcard/%d.jpg", System.currentTimeMillis()));
+                    outStream = new FileOutputStream(name);
                     outStream.write(data);
                     outStream.close();
                     Log.d("Log", "onPictureTaken - wrote bytes: " + data.length);
@@ -63,7 +66,11 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
 
     public void captureImage(View v) throws IOException {
         //take the picture
+        name = String.format("/sdcard/%d.jpg", System.currentTimeMillis());
         camera.takePicture(null, null, jpegCallback);
+        Intent newIntent = new Intent(this, PhotoVerificationActivity.class);
+        newIntent.putExtra("URI", name);
+        startActivity(newIntent);
     }
 
     public void refreshCamera() {
