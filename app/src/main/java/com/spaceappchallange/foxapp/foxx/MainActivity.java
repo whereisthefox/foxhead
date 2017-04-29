@@ -1,32 +1,29 @@
 package com.spaceappchallange.foxapp.foxx;
 
+import android.app.Activity;
+import android.content.Context;
+import android.hardware.Camera;
+import android.hardware.Camera.PictureCallback;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Toast;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import android.app.Activity;
-import android.hardware.Camera;
-import android.hardware.Camera.PictureCallback;
-import android.hardware.Camera.ShutterCallback;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.spaceappchallange.foxapp.foxx.R;
-
 public class MainActivity extends Activity implements SurfaceHolder.Callback {
-    TextView testView;
 
     Camera camera;
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
 
-    PictureCallback rawCallback;
-    ShutterCallback shutterCallback;
     PictureCallback jpegCallback;
 
     /**
@@ -50,7 +47,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
         jpegCallback = new PictureCallback() {
             public void onPictureTaken(byte[] data, Camera camera) {
-                FileOutputStream outStream = null;
+                FileOutputStream outStream;
                 try {
                     outStream = new FileOutputStream(String.format("/sdcard/%d.jpg", System.currentTimeMillis()));
                     outStream.write(data);
@@ -112,11 +109,12 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
             System.err.println(e);
             return;
         }
-        Camera.Parameters param;
-        param = camera.getParameters();
+        Camera.Parameters param = camera.getParameters();
 
         // modify parameter
-        param.setPreviewSize(352, 288);
+        Camera.Size supportedPictureSize = camera.getParameters().getSupportedPictureSizes().get(0);
+        param.setPreviewSize(supportedPictureSize.width, supportedPictureSize.height);
+
         camera.setParameters(param);
         try {
             // The Surface has been created, now tell the camera where to draw
@@ -128,6 +126,42 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
             System.err.println(e);
             return;
         }
+        //adjustRotation();
+        int correction = 90;
+        camera.setDisplayOrientation(correction);
+    }
+
+    private void adjustRotation() {
+        android.hardware.Camera.CameraInfo camInfo =
+                new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(getBackFacingCameraId(), camInfo);
+
+        Display display = ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int rotation = display.getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+
+        int result;
+        if (camInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (camInfo.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (camInfo.orientation - degrees + 360) % 360;
+        }
+        camera.setDisplayOrientation(result);
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
@@ -137,4 +171,19 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         camera = null;
     }
 
+    private int getBackFacingCameraId() {
+        int cameraId = -1;
+        // Search for the front facing camera
+        int numberOfCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+
+                cameraId = i;
+                break;
+            }
+        }
+        return cameraId;
+    }
 }
