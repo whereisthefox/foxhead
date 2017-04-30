@@ -20,6 +20,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     Camera camera;
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
+    CameraActivity self;
 
     String name;
 
@@ -31,6 +32,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        self = this;
 
         setContentView(R.layout.activity_camera);
 
@@ -60,6 +62,9 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
                 }
                 Toast.makeText(getApplicationContext(), "Picture Saved", Toast.LENGTH_LONG).show();
                 refreshCamera();
+                Intent newIntent = new Intent(self, PhotoVerificationActivity.class);
+                newIntent.putExtra("URI", name);
+                startActivity(newIntent);
             }
         };
     }
@@ -67,10 +72,13 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     public void captureImage(View v) throws IOException {
         //take the picture
         name = String.format("/sdcard/%d.jpg", System.currentTimeMillis());
+        Camera.Parameters params = camera.getParameters();
+        params.set("orientation", "portrait");
+        params.set("rotation", "90");
+        camera.setParameters(params);
+        camera.setDisplayOrientation(90);
         camera.takePicture(null, null, jpegCallback);
-        Intent newIntent = new Intent(this, PhotoVerificationActivity.class);
-        newIntent.putExtra("URI", name);
-        startActivity(newIntent);
+
     }
 
     public void refreshCamera() {
