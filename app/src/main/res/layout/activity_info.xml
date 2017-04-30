@@ -8,33 +8,9 @@
     tools:context="com.spaceappchallange.foxapp.foxx.InfoActivity">
 
     <ImageView
-        android:id="@+id/spottedBox"
-        android:layout_width="305dp"
-        android:layout_height="150dp"
-        android:layout_alignTop="@+id/distanceBox"
-        android:layout_toEndOf="@+id/distanceBox"
-        android:layout_toRightOf="@+id/distanceBox"
-        app:srcCompat="@color/colorDarkPurple"
-        tools:layout_editor_absoluteX="305dp"
-        tools:layout_editor_absoluteY="562dp" />
-
-    <ImageView
-        android:id="@+id/distanceBox"
-        android:layout_width="305dp"
-        android:layout_height="150dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="77dp"
-        app:srcCompat="@color/colorLightPurple"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="562dp" />
-
-    <ImageView
         android:id="@+id/animalImage"
         android:layout_width="100dp"
         android:layout_height="300dp"
-        android:layout_above="@+id/distanceBox"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
@@ -50,17 +26,48 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/spottedBox"
         android:background="@color/colorOrange"
-        android:text="Button" />
+        android:text="Camera"
+        android:textColor="#F8F3F5"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/imageView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/deer"
-        android:layout_marginBottom="283dp"
-        android:layout_above="@+id/spottedBox"
+        android:layout_alignBottom="@+id/animalImage"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="94dp"
+        app:srcCompat="@drawable/deer" />
+
+    <TextView
+        android:id="@+id/titleTextBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/animalImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="46dp"
+        android:text="TextView"
+        android:textColor="@color/colorOrange"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/latinNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/animalImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="19dp"
+        android:text="TextView"
+        android:layout_below="@+id/animalImage"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

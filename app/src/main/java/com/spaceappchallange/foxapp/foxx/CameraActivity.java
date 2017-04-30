@@ -39,6 +39,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         surfaceHolder = surfaceView.getHolder();
 
+
         // Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
         surfaceHolder.addCallback(this);

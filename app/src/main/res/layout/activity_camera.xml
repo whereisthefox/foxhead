@@ -19,6 +19,7 @@
         android:clickable="true"
         android:gravity="center"
         android:onClick="captureImage"
+        android:background="@color/colorOrange"
         android:orientation="horizontal" >
 
         <TextView
@@ -27,6 +28,8 @@
             android:gravity="center"
             android:padding="10dp"
             android:text="Capture"
+            android:textColor="#F8F3F5"
+            android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 

@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Foxx</string>
     <string name="action_settings">Settings</string>
+
+    <string name="title_activity_answer">AnswerActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_dev_only">DevOnlyActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

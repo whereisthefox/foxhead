@@ -7,5 +7,7 @@
     <color name="colorDarkPurple">#5E2DB0</color>
     <color name="colorLightPurple">#7236d7</color>
     <color name="colorDarkGrey">#A9A9A9</color>
-    <color type="color" name="colorLightGrey">#F8F3F5</color>
+    <color name="colorLightGrey">#F8F3F5</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>
