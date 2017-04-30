@@ -82,9 +82,6 @@ public class PhotoVerificationActivity extends AppCompatActivity {
         verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent newIntention = new Intent(self, DevOnlyActivity.class);
-//                newIntention.putExtra("URI", species);
-//                startActivity(newIntention);
                 mockedValidation();
             }
         });
@@ -94,6 +91,7 @@ public class PhotoVerificationActivity extends AppCompatActivity {
         Random random = new Random();
         boolean isValid = random.nextBoolean();
         Intent answerIntent = new Intent(this, AnswerActivity.class);
+        answerIntent.putExtra("validFlag", isValid);
         startActivity(answerIntent);
     }
 }

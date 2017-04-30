@@ -10,6 +10,7 @@ import android.hardware.Camera.PictureCallback;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -18,14 +19,20 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Random;
 
 public class CameraActivity extends Activity implements SurfaceHolder.Callback {
 
@@ -35,6 +42,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
     CameraActivity self;
 
     String name;
+    String serverFileName;
     Location location;
 
     PictureCallback jpegCallback;
@@ -75,6 +83,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
                     e.printStackTrace();
                 } finally {
                 }
+                new HttpAsyncTask().execute("http://192.168.42.76:8080/api");
                 Toast.makeText(getApplicationContext(), "Picture Saved", Toast.LENGTH_LONG).show();
                 refreshCamera();
                 Intent newIntent = new Intent(self, PhotoVerificationActivity.class);
@@ -84,9 +93,81 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
         };
     }
 
+    public String POST(String url) {
+        InputStream inputStream = null;
+        String result = "";
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(url);
+
+            String json = "";
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.accumulate("lat", location.getLatitude());
+            jsonObject.accumulate("lon", location.getLongitude());
+            jsonObject.accumulate("dt", System.currentTimeMillis());
+            jsonObject.accumulate("picture", name);
+
+            json = jsonObject.toString();
+
+            StringEntity se = new StringEntity(json);
+
+            httpPost.setEntity(se);
+
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+
+            // 8. Execute POST request to the given URL
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            // 9. receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // 10. convert inputstream to string
+            if (inputStream != null) {
+                result = convertInputStreamToString(inputStream);
+            } else {
+                result = "misza";
+            }
+        } catch (Exception e) {
+
+        }
+        return result;
+    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            return POST(urls[0]);
+        }
+
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getBaseContext(), "Data Sent!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while ((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
+    }
+
     public void captureImage(View v) throws IOException {
         //take the picture
-        name = String.format("/sdcard/%d.jpg", System.currentTimeMillis());
+        Random rng = new Random();
+        int userId = rng.nextInt(5);
+        name = String.format("/sdcard/%d.jpg", userId + System.currentTimeMillis());
+        serverFileName = userId + System.currentTimeMillis() + ".jpg";
+
         Camera.Parameters params = camera.getParameters();
         params.set("orientation", "portrait");
         params.set("rotation", "90");
