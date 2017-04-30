@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -25,13 +23,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import static android.R.attr.bitmap;
-
 public class PhotoVerificationActivity extends AppCompatActivity {
     String name;
     Button verifyButton;
     Button verify;
     String species;
+    ImageView imageView;
+    Bitmap myBitmap;
     PhotoVerificationActivity self;
 
     @Override
@@ -40,9 +38,9 @@ public class PhotoVerificationActivity extends AppCompatActivity {
         self = this;
         setContentView(R.layout.activity_photo_verification);
 
-        ImageView imageView = (ImageView) this.findViewById(R.id.imageView);
-        verifyButton = (Button) this.findViewById(R.id.verifyButton);
 
+        verifyButton = (Button) this.findViewById(R.id.verifyButton);
+        imageView = (ImageView) self.findViewById(R.id.imageView);
         verifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,19 +57,18 @@ public class PhotoVerificationActivity extends AppCompatActivity {
         Intent oldIntent = getIntent();
         name = oldIntent.getStringExtra("URI");
         File imgFile = new File(name);
-        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+        myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         imageView.setImageBitmap(myBitmap);
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-        byte[] bitmapdata = bos.toByteArray();
-        final ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
 
         final String fileName = String.valueOf(new Date().getTime()) + ".jpg";
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 try {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    myBitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                    byte[] bitmapdata = bos.toByteArray();
+                    final ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
                     cloudinary.uploader().upload(bs, ObjectUtils.asMap("public_id", fileName));
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -18,7 +18,7 @@
         app:srcCompat="@android:color/background_light" />
 
     <Button
-        android:id="@+id/showMap"
+        android:id="@+id/cameraButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
