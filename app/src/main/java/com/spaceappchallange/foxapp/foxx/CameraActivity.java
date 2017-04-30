@@ -18,9 +18,14 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CameraActivity extends Activity implements SurfaceHolder.Callback {
 
@@ -60,6 +65,7 @@ public class CameraActivity extends Activity implements SurfaceHolder.Callback {
                 FileOutputStream outStream;
                 try {
                     outStream = new FileOutputStream(name);
+
                     outStream.write(data);
                     outStream.close();
                     Log.d("Log", "onPictureTaken - wrote bytes: " + data.length);
