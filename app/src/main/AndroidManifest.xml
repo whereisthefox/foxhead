@@ -34,10 +34,12 @@
             android:name=".AnswerActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".InfoActivity" />
         <activity
+
             android:name=".DevOnlyActivity"
-            android:label="@string/title_activity_dev_only"></activity>
+            android:label="@string/title_activity_dev_only">
+
+        </activity>
     </application>
 
 </manifest>

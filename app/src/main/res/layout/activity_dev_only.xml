@@ -12,7 +12,7 @@
         android:id="@+id/addressEdit"
         android:layout_width="266dp"
         android:layout_height="wrap_content"
-        android:text="http://www.wp.pl"
+        android:text="http://172.18.0.1"
         tools:layout_editor_absoluteY="163dp"
         tools:layout_editor_absoluteX="59dp"
         android:layout_marginTop="89dp"

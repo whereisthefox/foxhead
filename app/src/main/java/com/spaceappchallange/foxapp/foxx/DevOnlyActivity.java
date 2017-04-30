@@ -31,7 +31,7 @@ public class DevOnlyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dev_only);
         Intent oldIntention = getIntent();
-        species = oldIntention.getStringExtra("URI");
+        species = "sarenka";
         mTextMessage = (EditText) findViewById(R.id.addressEdit);
         label = (TextView) findViewById(R.id.label);
         button = (Button) findViewById(R.id.button);
