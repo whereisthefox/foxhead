@@ -1,9 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.spaceappchallange.foxapp.foxx.InfoActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/spottedBox"
+        android:layout_width="305dp"
+        android:layout_height="150dp"
+        android:layout_alignTop="@+id/distanceBox"
+        android:layout_toEndOf="@+id/distanceBox"
+        android:layout_toRightOf="@+id/distanceBox"
+        app:srcCompat="@color/colorDarkPurple"
+        tools:layout_editor_absoluteX="305dp"
+        tools:layout_editor_absoluteY="562dp" />
+
+    <ImageView
+        android:id="@+id/distanceBox"
+        android:layout_width="305dp"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="77dp"
+        app:srcCompat="@color/colorLightPurple"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="562dp" />
+
+    <ImageView
+        android:id="@+id/animalImage"
+        android:layout_width="100dp"
+        android:layout_height="300dp"
+        android:layout_above="@+id/distanceBox"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        app:srcCompat="@android:color/background_light" />
+
+    <Button
+        android:id="@+id/showMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/spottedBox"
+        android:background="@color/colorOrange"
+        android:text="Button" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/deer"
+        android:layout_marginBottom="283dp"
+        android:layout_above="@+id/spottedBox"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>
