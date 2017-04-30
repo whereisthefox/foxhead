@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-    FloatingActionButton fab;
-    MainActivity self;
+    private FloatingActionButton fab;
+    private MainActivity self;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

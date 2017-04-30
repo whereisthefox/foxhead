@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -20,9 +21,10 @@ import java.net.URL;
 
 public class DevOnlyActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    private EditText mTextMessage;
+    private TextView label;
     private Button button;
-    String species;
+    private String species;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,8 @@ public class DevOnlyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dev_only);
         Intent oldIntention = getIntent();
         species = oldIntention.getStringExtra("URI");
-        mTextMessage = (TextView) findViewById(R.id.textView);
+        mTextMessage = (EditText) findViewById(R.id.addressEdit);
+        label = (TextView) findViewById(R.id.label);
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +58,7 @@ public class DevOnlyActivity extends AppCompatActivity {
                 } catch (ProtocolException e) {
                     e.printStackTrace();
                 }
+                label.setText("Success");
             }
         });
     }
